@@ -30,7 +30,7 @@ class NetworkingController {
     var randomUsers: [RandomUser] = []
     let baseURL: URL = URL(string: "https://randomuser.me/api/?format=json&inc=name,email,phone,picture&results=1000")!
     
-    func getAlbums(completion: @escaping (NetworkError?) -> Void) {
+    func getUsers(completion: @escaping (NetworkError?) -> Void) {
         
         URLSession.shared.dataTask(with: baseURL) { (data, response, error) in
             if let _ = error {
@@ -46,10 +46,10 @@ class NetworkingController {
             let jsonDecoder = JSONDecoder()
             do {
                 
-                self.randomUsers = try jsonDecoder.decode([RandomUser].self, from: data)
+                let results = try jsonDecoder.decode(RandomUserResults.self, from: data)
+                self.randomUsers = results.results
                 completion(nil)
             } catch {
-                print("\(error)")
                 completion(.noDecode)
                 print("decode failure")
             }
