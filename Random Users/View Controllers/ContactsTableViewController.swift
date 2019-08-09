@@ -19,6 +19,10 @@ class ContactsTableViewController: UITableViewController {
             if let error = error {
                 NSLog("Error getting users: \(error)")
             }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 
