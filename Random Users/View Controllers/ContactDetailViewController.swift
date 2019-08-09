@@ -14,6 +14,8 @@ class ContactDetailViewController: UIViewController {
     @IBOutlet weak var phoneNumberLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     
+    var randomUser: RandomUser?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
