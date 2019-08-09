@@ -48,7 +48,8 @@ struct RandomUser: Decodable {
         let imageURL = try imageURLContainer.decode(String.self, forKey: .medium)
         self.imageURL = imageURL
     }
-    
-    
 }
 
+struct RandomUserResults: Decodable {
+    let results: [RandomUser]
+}
