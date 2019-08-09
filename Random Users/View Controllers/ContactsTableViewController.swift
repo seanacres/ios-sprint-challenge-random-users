@@ -43,7 +43,7 @@ class ContactsTableViewController: UITableViewController {
         }
 
         let user = networkingController.randomUsers[indexPath.row]
-        cell.contactName.text = user.name
+        cell.contactName.text = user.name.capitalized
         
         loadImage(forCell: cell, forIndexPath: indexPath)
 

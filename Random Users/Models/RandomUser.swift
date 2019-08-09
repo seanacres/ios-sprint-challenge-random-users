@@ -26,7 +26,7 @@ struct RandomUser: Decodable {
         }
         
         enum PictureKeys: String, CodingKey {
-            case medium
+            case large
         }
     }
     
@@ -45,7 +45,7 @@ struct RandomUser: Decodable {
         
         let imageURLContainer = try container.nestedContainer(keyedBy: RandomUserKeys.PictureKeys.self, forKey: .imageURL)
         
-        let imageURL = try imageURLContainer.decode(String.self, forKey: .medium)
+        let imageURL = try imageURLContainer.decode(String.self, forKey: .large)
         self.imageURL = imageURL
     }
 }
