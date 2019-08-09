@@ -15,13 +15,25 @@ class ContactDetailViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     
     var randomUser: RandomUser?
+    var userImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        updateViews()
     }
     
+    func updateViews() {
+        if let user = randomUser {
+            phoneNumberLabel.text = user.phone
+            emailLabel.text = user.email
+            title = user.name.capitalized
+        }
+        
+        if let image = userImage {
+            imageView.image = image
+        }
+    }
 
     /*
     // MARK: - Navigation
