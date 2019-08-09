@@ -16,6 +16,7 @@ class ContactDetailViewController: UIViewController {
     
     var randomUser: RandomUser?
     var userImage: UIImage?
+    var cache: Cache<String, Data>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,11 +29,15 @@ class ContactDetailViewController: UIViewController {
             phoneNumberLabel.text = user.phone
             emailLabel.text = user.email
             title = user.name.capitalized
+            
+            if let cache = cache {
+                if let data = cache.value(for: "\(user.phone) large") {
+                    imageView.image = UIImage(data: data)
+                }
+            }
         }
         
-        if let image = userImage {
-            imageView.image = image
-        }
+        
     }
 
     /*

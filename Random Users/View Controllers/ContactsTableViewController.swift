@@ -53,7 +53,10 @@ class ContactsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let id = networkingController.randomUsers[indexPath.row].phone
-        fetchOps[id]?.cancel()
+        let thumbId = "\(id) thumb"
+        let largeId = "\(id) large"
+        fetchOps[thumbId]?.cancel()
+        fetchOps[largeId]?.cancel()
     }
     
     // MARK: - Functions
@@ -67,13 +70,18 @@ class ContactsTableViewController: UITableViewController {
         }
         
         // If not fetch the image and then cache it for later use
-        let photoFetchOperation = PhotoFetchOperation(imageURL: contact.imageURL)
+        let largePhotoFetchOp = PhotoFetchOperation(imageURL: contact.imageURLs["large"]!)
+        let thumbPhotoFetchOp = PhotoFetchOperation(imageURL: contact.imageURLs["thumb"]!)
+//        let photoFetchOperation = PhotoFetchOperation(imageURL: contact.imageURL)
         let cacheOperation = BlockOperation {
-            guard let data = photoFetchOperation.imageData else { return }
-            self.cache.cache(value: data, for: contact.phone)
+            guard let thumbData = thumbPhotoFetchOp.imageData,
+                let largeData = largePhotoFetchOp.imageData else { return }
+            
+            self.cache.cache(value: thumbData, for: "\(contact.phone) thumb")
+            self.cache.cache(value: largeData, for: "\(contact.phone) large")
         }
         let imageSetOperation = BlockOperation {
-            guard let data = photoFetchOperation.imageData else { return }
+            guard let data = thumbPhotoFetchOp.imageData else { return }
             DispatchQueue.main.async {
                 // If the row is offscreen, don't set the image
                 if self.tableView.indexPathsForVisibleRows?.contains(indexPath) ?? false {
@@ -83,13 +91,15 @@ class ContactsTableViewController: UITableViewController {
         }
         
         // Both cache and image set need a photo to be fetched first
-        cacheOperation.addDependency(photoFetchOperation)
-        imageSetOperation.addDependency(photoFetchOperation)
+        cacheOperation.addDependency(largePhotoFetchOp)
+        cacheOperation.addDependency(thumbPhotoFetchOp)
+        imageSetOperation.addDependency(thumbPhotoFetchOp)
         
-        photoFetchQueue.addOperations([photoFetchOperation, cacheOperation, imageSetOperation], waitUntilFinished: false)
+        photoFetchQueue.addOperations([largePhotoFetchOp, thumbPhotoFetchOp, cacheOperation, imageSetOperation], waitUntilFinished: false)
         
         // Add photo fetch to dictionary so it can be cancelled if row is offscreen
-        fetchOps[contact.phone] = photoFetchOperation
+        fetchOps["\(contact.phone) thumb"] = thumbPhotoFetchOp
+        fetchOps["\(contact.phone) large"] = largePhotoFetchOp
     }
 
     // MARK: - Navigation
@@ -97,9 +107,7 @@ class ContactsTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let contactDetailVC = segue.destination as? ContactDetailViewController, let indexPath = tableView.indexPathForSelectedRow else { return }
         contactDetailVC.randomUser = networkingController.randomUsers[indexPath.row]
-        
-        guard let cell = tableView.cellForRow(at: indexPath) as? ContactTableViewCell else { return }
-        contactDetailVC.userImage = cell.contactImageView.image
+        contactDetailVC.cache = cache
     }
 
 }
