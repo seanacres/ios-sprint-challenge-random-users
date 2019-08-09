@@ -9,9 +9,6 @@
 import UIKit
 
 class ContactsTableViewController: UITableViewController {
-
-    @IBOutlet weak var cellImageView: UIImageView!
-    @IBOutlet weak var cellContactName: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ContactCell" rowHeight="73" id="JbR-tq-WIs">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ContactCell" rowHeight="73" id="JbR-tq-WIs" customClass="ContactTableViewCell" customModule="Random_Users" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="73"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JbR-tq-WIs" id="V2f-sn-JCG">
@@ -52,6 +52,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="contactImageView" destination="XHl-eg-A3d" id="sQ8-CE-2ON"/>
+                                    <outlet property="contactName" destination="O0C-WD-B8R" id="gpH-qX-K7a"/>
                                     <segue destination="umx-7o-EFW" kind="show" id="V2I-Tm-mcH"/>
                                 </connections>
                             </tableViewCell>
@@ -62,10 +64,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Contacts" id="hlo-Fl-J1H"/>
-                    <connections>
-                        <outlet property="cellContactName" destination="O0C-WD-B8R" id="eLe-we-5zA"/>
-                        <outlet property="cellImageView" destination="XHl-eg-A3d" id="KBw-LR-vHW"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gbo-Dm-3se" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
