@@ -28,7 +28,7 @@ class NetworkingController {
     }
     
     var randomUsers: [RandomUser] = []
-    let baseURL: URL = URL(string: "https://randomuser.me/api/?format=json&inc=name,email,phone,picture&results=1000")!
+    let baseURL: URL = URL(string: "https://randomuser.me/api/?format=json&inc=name,email,phone,picture&results=5000")!
     
     func getUsers(completion: @escaping (NetworkError?) -> Void) {
         
